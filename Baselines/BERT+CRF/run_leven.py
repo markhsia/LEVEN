@@ -48,6 +48,7 @@ warnings.filterwarnings('ignore')
 
 logger = logging.getLogger(__name__)
 
+from transformers import ALBERT_PRETRAINED_CONFIG_ARCHIVE_MAP
 ALL_MODELS = sum(
     (
         tuple(conf.pretrained_config_archive_map.keys())
