@@ -13,6 +13,6 @@ CUDA_VISIBLE_DEVICES=4,5,6,7 python run_leven.py \
 	--seed 100\
 	--do_train \
 	--do_eval \
-	--model_name_or_path ./bert-base-chinese.bin \
+	--model_name_or_path ./bert-base-chinese \
   --eval_all_checkpoints \
   --overwrite_output_dir
