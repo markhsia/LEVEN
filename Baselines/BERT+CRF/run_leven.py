@@ -226,6 +226,9 @@ def train(args, train_dataset, model, tokenizer, labels, pad_token_label_id):
                                                           output_device=args.local_rank,
                                                           find_unused_parameters=True)
 
+    device = torch.device("cuda:0" if torch.cuda.is_available() else "cpu")
+    print(device)
+
     # Train!
     logger.info("***** Running training *****")
     logger.info("  Num examples = %d", len(train_dataset))
