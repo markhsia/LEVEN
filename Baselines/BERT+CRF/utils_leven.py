@@ -271,27 +271,29 @@ class InputFeatures(object):
 def read_examples_from_file(data_dir, mode):
     input_data = jsonlines.open(os.path.join(data_dir, "{}.jsonl".format(mode)))
     examples = []
-
+    k=0
     for doc in input_data:
-        words = [c['tokens'] for c in doc['content']]
-        labels = [['O']*len(c['tokens']) for c in doc['content']]
+        if k % 10==0:
+            words = [c['tokens'] for c in doc['content']]
+            labels = [['O']*len(c['tokens']) for c in doc['content']]
 
-        if mode != 'test':
-            for event in doc['events']:
-                for mention in event['mention']:
-                    labels[mention['sent_id']][mention['offset'][0]] = "B-" + event['type']
+            if mode != 'test':
+                for event in doc['events']:
+                    for mention in event['mention']:
+                        labels[mention['sent_id']][mention['offset'][0]] = "B-" + event['type']
+                        for i in range(mention['offset'][0] + 1, mention['offset'][1]):
+                            labels[mention['sent_id']][i] = "I-" + event['type']
+
+                for mention in doc['negative_triggers']:
+                    labels[mention['sent_id']][mention['offset'][0]] = "O"
                     for i in range(mention['offset'][0] + 1, mention['offset'][1]):
-                        labels[mention['sent_id']][i] = "I-" + event['type']
+                        labels[mention['sent_id']][i] = "O"
 
-            for mention in doc['negative_triggers']:
-                labels[mention['sent_id']][mention['offset'][0]] = "O"
-                for i in range(mention['offset'][0] + 1, mention['offset'][1]):
-                    labels[mention['sent_id']][i] = "O"
-
-        for i in range(0, len(words)):
-            examples.append(InputExample(guid="%s-%s-%d" % (mode, doc['id'], i),
-                                         words=words[i],
-                                         labels=labels[i]))
+            for i in range(0, len(words)):
+                examples.append(InputExample(guid="%s-%s-%d" % (mode, doc['id'], i),
+                                             words=words[i],
+                                             labels=labels[i]))
+        k=k+1
 
     return examples
 
