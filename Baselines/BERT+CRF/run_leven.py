@@ -485,10 +485,11 @@ def main():
         parser.add_argument("--model_type", default=None, type=str, required=True,
                             help="Model type selected in the list: " + ", ".join(MODEL_CLASSES.keys()))
 
-        parser.add_argument("--model_name_or_path", default='./bert-base-chinese', type=str, required=False,
+        parser.add_argument("--model_name_or_path", default='./bert-base-chinese', type=str, required=False,  help="")
+        """
                             help="Path to pre-trained model or shortcut name selected in the list: " + ", ".join(
                                 ALL_MODELS))
-
+        """
         parser.add_argument("--output_dir", default='./saved', type=str, required=False,
                             help="The output directory where the model predictions and checkpoints will be written.")
 
