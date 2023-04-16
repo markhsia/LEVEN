@@ -14,5 +14,6 @@ python run_leven.py \
 	--do_train \
 	--do_eval \
 	--model_name_or_path bert-base-chinese \
+	--local_rank 1 \
   --eval_all_checkpoints \
   --overwrite_output_dir
