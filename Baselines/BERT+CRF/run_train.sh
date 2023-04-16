@@ -1,4 +1,4 @@
-CUDA_VISIBLE_DEVICES=0,1,2,3 python run_leven.py \
+python run_leven.py \
 	--data_dir ./data \
 	--model_type bertcrf \
 	--output_dir ./saved \
