@@ -476,6 +476,7 @@ def main():
     use_parser = True
     parser = argparse.ArgumentParser()
     args = None
+    print(torch.cuda.is_available())
 
     if use_parser:
         # Required parameters
