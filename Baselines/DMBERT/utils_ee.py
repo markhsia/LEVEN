@@ -205,31 +205,33 @@ class LEVENProcessor(DataProcessor):
         """Creates examples for the training and dev sets."""
         examples = []
         input_data = jsonlines.open(fin)
-
+        k=0
         for data in input_data:
-            for event in data['events']:
-                for mention in event['mention']:
-                    e_id = "%s-%s" % (set_type, mention['id'])
+            if k%10==0:
+                for event in data['events']:
+                    for mention in event['mention']:
+                        e_id = "%s-%s" % (set_type, mention['id'])
+                        examples.append(
+                            InputExample(
+                                example_id=e_id,
+                                tokens=data['content'][mention['sent_id']]['tokens'],
+                                triggerL=mention['offset'][0],
+                                triggerR=mention['offset'][1],
+                                label=event['type'],
+                            )
+                        )
+                for nt in data['negative_triggers']:
+                    e_id = "%s-%s" % (set_type, nt['id'])
                     examples.append(
                         InputExample(
                             example_id=e_id,
-                            tokens=data['content'][mention['sent_id']]['tokens'],
-                            triggerL=mention['offset'][0],
-                            triggerR=mention['offset'][1],
-                            label=event['type'],
+                            tokens=data['content'][nt['sent_id']]['tokens'],
+                            triggerL=nt['offset'][0],
+                            triggerR=nt['offset'][1],
+                            label='None',
                         )
                     )
-            for nt in data['negative_triggers']:
-                e_id = "%s-%s" % (set_type, nt['id'])
-                examples.append(
-                    InputExample(
-                        example_id=e_id,
-                        tokens=data['content'][nt['sent_id']]['tokens'],
-                        triggerL=nt['offset'][0],
-                        triggerR=nt['offset'][1],
-                        label='None',
-                    )
-                )
+            k=k+1
 
         return examples
 
