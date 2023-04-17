@@ -207,7 +207,7 @@ class LEVENProcessor(DataProcessor):
         input_data = jsonlines.open(fin)
         k=0
         for data in input_data:
-            if k%100==0:
+            if k%10==0:
                 for event in data['events']:
                     for mention in event['mention']:
                         e_id = "%s-%s" % (set_type, mention['id'])
@@ -286,6 +286,8 @@ def convert_examples_to_features(
     for ex_index, example in enumerate(tqdm(examples, desc='convert examples to features')):
         if ex_index % 10000 == 0:
             logger.info("Writing example %d of %d" % (ex_index, len(examples)))
+        if ex_index % 100 != 0:
+            continue
 
         # leven is in Chinese, therefore, use "".join() instead of " ".join()
         textL = tokenizer.tokenize("".join(example.tokens[:example.triggerL]))
