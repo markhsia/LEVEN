@@ -207,7 +207,7 @@ class LEVENProcessor(DataProcessor):
         input_data = jsonlines.open(fin)
         k=0
         for data in input_data:
-            if k%10==0:
+            if k%100==0:
                 for event in data['events']:
                     for mention in event['mention']:
                         e_id = "%s-%s" % (set_type, mention['id'])
